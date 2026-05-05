@@ -15,3 +15,4 @@ while True:
     print("1-adicionar\n2-visualizar\n3-editar\n4-excluir")
     op = int(input("Escolha: "))
     if op == 1:
+        add
