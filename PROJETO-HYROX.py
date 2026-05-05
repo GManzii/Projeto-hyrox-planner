@@ -24,6 +24,8 @@ while True:
     elif op == 2:
         if len(treinos) > 0:
             for i in range(len(treinos)):
+                print()
+                print("---treino---")
                 print(f"Treino: {treinos[i]}")
                 print(f"Duração: {duracoes[i]}")
                 print(f"Intensidade: {intensidades[i]}")
