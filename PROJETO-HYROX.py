@@ -20,7 +20,7 @@ def vizualizar():
             print(f"data: {treino['data']}")
 
 print("============= Hyrox Planner ============= ")
-print("1-adicionar\n2-visualizar\n3-editar\n4-excluir\n5-excluir")
+print("1-adicionar\n2-visualizar\n3-editar\n4-excluir\n5-desligar")
 while True:
     
     op = int(input("Escolha: "))
