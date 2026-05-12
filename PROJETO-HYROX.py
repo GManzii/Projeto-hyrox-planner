@@ -2,7 +2,8 @@ treinos = []
 
 def add():
     treino = {
-        "tipo": input("Tipo de treino(corrida, força ou simulado HYROX): "),
+        "nome": input("Nome do treino: "),
+        "tipo": input("Tipo de treino: "),
         "duracao": input("Duração(em minutos): "),
         "intensidade": input("Intensidade: "),
         "data": input("Data: ")
@@ -20,7 +21,7 @@ def vizualizar():
             print(f"data: {treino['data']}")
 def editar():
     i=int(input("Digite o treino o qual você deseja editar: "))
-    print("Tipo/duração/intensidade/data")
+    print("Nome/Tipo/duração/intensidade/data")
     campo=(input("Digite o campo que será editado: "))
 
     if campo in treinos[i]:
