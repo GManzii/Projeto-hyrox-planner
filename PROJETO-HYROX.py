@@ -2,7 +2,7 @@ treinos = []
 
 def add():
     treino = {
-        "tipo": input("Tipo de treino: "),
+        "tipo": input("Tipo de treino(corrida, força ou simulado HYROX): "),
         "duracao": input("Duração(em minutos): "),
         "intensidade": input("Intensidade: "),
         "data": input("Data: ")
