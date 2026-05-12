@@ -4,52 +4,102 @@ def add():
     treino = {
         "nome": input("Nome do treino: "),
         "tipo": input("Tipo de treino: "),
-        "duracao": input("Duração(em minutos): "),
+        "duracao": input("Duração (em minutos): "),
         "intensidade": input("Intensidade: "),
         "data": input("Data: ")
     }
+
     treinos.append(treino)
-def vizualizar():
+    print("Treino adicionado com sucesso!\n")
+
+
+def visualizar():
     if not treinos:
-        print("Nenhum treino encontrado")
+        print("Nenhum treino encontrado.\n")
+
     else:
         for i, treino in enumerate(treinos):
-            print(f"---{i}° treino---")
-            print(f"tipo: {treino['tipo']}")
-            print(f"duração: {treino['duracao']}")
-            print(f"intensidade: {treino['intensidade']}")
-            print(f"data: {treino['data']}")
+            print(f"\n--- {i}° treino ---")
+            print(f"Nome: {treino['nome']}")
+            print(f"Tipo: {treino['tipo']}")
+            print(f"Duração: {treino['duracao']}")
+            print(f"Intensidade: {treino['intensidade']}")
+            print(f"Data: {treino['data']}")
+
+
 def editar():
-    i=int(input("Digite o treino o qual você deseja editar: "))
-    print("Nome/Tipo/duração/intensidade/data")
-    campo=(input("Digite o campo que será editado: "))
+    visualizar()
 
-    if campo in treinos[i]:
-        novo_valor=input("novo valor: ")
-        treinos[i][campo]=novo_valor
-    else:
-        print("opção inválida")
-def remover():
     if not treinos:
-        print("Treino não encontrado")
-    else:
-        t=int(input("Qual treino você deseja remover: "))
-        treinos.pop(t)
+        return
 
-print("============= Hyrox Planner ============= ")
-print("1-Adicionar\n2-Visualizar\n3-Editar\n4-Excluir\n5-Parar")
+    i = int(input("\nDigite o número do treino que deseja editar: "))
+
+    if i >= 0 and i < len(treinos):
+
+        print("\nCampos disponíveis:")
+        print("nome | tipo | duracao | intensidade | data")
+
+        campo = input("Digite o campo que será editado: ").lower()
+
+        if campo in treinos[i]:
+
+            novo_valor = input("Novo valor: ")
+            treinos[i][campo] = novo_valor
+
+            print("Treino atualizado!\n")
+
+        else:
+            print("Campo inválido.\n")
+
+    else:
+        print("Treino não encontrado.\n")
+
+
+def remover():
+    visualizar()
+
+    if not treinos:
+        return
+
+    t = int(input("\nQual treino deseja remover: "))
+
+    if t >= 0 and t < len(treinos):
+
+        treinos.pop(t)
+        print("Treino removido!\n")
+
+    else:
+        print("Treino não encontrado.\n")
+
+
+print("============= HYROX Planner ============= ")
+
 while True:
-    
-    op = int(input("Escolha: "))
+
+    print("\n1 - Adicionar")
+    print("2 - Visualizar")
+    print("3 - Editar")
+    print("4 - Excluir")
+    print("5 - Parar")
+
+    op = int(input("\nEscolha: "))
+
     if op == 1:
         add()
+
     elif op == 2:
-        vizualizar()
+        visualizar()
+
     elif op == 3:
         editar()
+
     elif op == 4:
         remover()
-    elif op ==5:
+
+    elif op == 5:
+        print("Programa encerrado.")
         break
+
     else:
         print("Erro. Número selecionado não corresponde a nenhuma ação.")
