@@ -1,5 +1,38 @@
 treinos = []
 
+def salvar_txt():
+
+    with open("HYROX.txt", "w", encoding="utf-8") as arquivo:
+
+        for treino in treinos:
+
+            linha = f"{treino['nome']};{treino['tipo']};{treino['duracao']};{treino['intensidade']};{treino['data']}\n"
+
+            arquivo.write(linha)
+
+def carregar_txt():
+
+    try:
+
+        with open("HYROX.txt", "r", encoding="utf-8") as arquivo:
+
+            for linha in arquivo:
+
+                dados = linha.strip().split(";")
+
+                treino = {
+                    "nome": dados[0],
+                    "tipo": dados[1],
+                    "duracao": dados[2],
+                    "intensidade": dados[3],
+                    "data": dados[4]
+                }
+
+                treinos.append(treino)
+
+    except FileNotFoundError:
+        pass
+
 def add():
     treino = {
         "nome": input("Nome do treino: "),
@@ -72,7 +105,7 @@ def remover():
     else:
         print("Treino não encontrado.\n")
 
-
+carregar_txt()
 print("============= HYROX Planner ============= ")
 
 while True:
@@ -103,3 +136,4 @@ while True:
 
     else:
         print("Erro. Número selecionado não corresponde a nenhuma ação.")
+    
