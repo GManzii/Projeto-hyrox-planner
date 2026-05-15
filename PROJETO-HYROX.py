@@ -52,10 +52,10 @@ def visualizar():
 
     else:
         for i, treino in enumerate(treinos):
-            print(f"\n--- {i}° treino ---")
+            print(f"\n--- {i+1}° treino ---")
             print(f"Nome: {treino['nome']}")
             print(f"Tipo: {treino['tipo']}")
-            print(f"Duração: {treino['duracao']}")
+            print(f"Duração: {treino['duracao']} minutos")
             print(f"Intensidade: {treino['intensidade']}")
             print(f"Data: {treino['data']}")
 
@@ -68,17 +68,17 @@ def editar():
 
     i = int(input("\nDigite o número do treino que deseja editar: "))
 
-    if i >= 0 and i < len(treinos):
+    if i-1 >= 0 and i-1 < len(treinos):
 
         print("\nCampos disponíveis:")
         print("nome | tipo | duracao | intensidade | data")
 
         campo = input("Digite o campo que será editado: ").lower()
 
-        if campo in treinos[i]:
+        if campo in treinos[i-1]:
 
             novo_valor = input("Novo valor: ")
-            treinos[i][campo] = novo_valor
+            treinos[i-1][campo] = novo_valor
 
             print("Treino atualizado!\n")
 
