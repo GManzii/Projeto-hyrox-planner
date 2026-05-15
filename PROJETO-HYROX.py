@@ -1,4 +1,5 @@
 treinos = []
+exercicios = []
 
 def salvar_txt():
 
@@ -32,17 +33,34 @@ def carregar_txt():
 
     except FileNotFoundError:
         pass
-
+def add_exercicio():
+    exercicio = {
+        "nome": input("Nome do exercício: "),
+        "tempo": input("Tempo: "),
+        "distancia": input("Distância: "),
+        "carga": input("Carga: "),
+        "repeticoes": input("Repetições: ")
+    }
+    exercicios.append(exercicio)
+    print("Exercício adicionado com sucesso!\n")
+    
 def add():
     treino = {
         "nome": input("Nome do treino: "),
-        "tipo": input("Tipo de treino: "),
+        "tipo": input("Tipo de treino (corrida | força | simulado hyrox): "),
         "duracao": input("Duração (em minutos): "),
-        "intensidade": input("Intensidade: "),
+        "intensidade": input("Intensidade (baixa | moderada | alta) : "),
         "data": input("Data: ")
     }
 
     treinos.append(treino)
+
+    if treino["tipo"].lower == "simulado hyrox":
+        qtd = input("Quantos exercícios de Hyrox deseja adicionar: ")
+        for i in range(qtd):
+            print(f"\n--- {i+1}° exercício ---")
+            add_exercicio()
+
     print("Treino adicionado com sucesso!\n")
 
 
