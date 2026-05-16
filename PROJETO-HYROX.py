@@ -33,6 +33,7 @@ def carregar_txt():
 
     except FileNotFoundError:
         pass
+        
 def add_exercicio():
     exercicio = {
         "nome": input("Nome do exercício: "),
