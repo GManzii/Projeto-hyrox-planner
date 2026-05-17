@@ -18,6 +18,9 @@ def carregar_txt():
 
             for linha in arquivo:
 
+                if linha.strip() == "":
+                    continue
+
                 dados = linha.strip().split(";")
 
                 treino = {
