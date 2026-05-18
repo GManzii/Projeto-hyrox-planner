@@ -32,7 +32,7 @@ def salvar_txt():
             )
 
             arquivo.write(linha)
-            
+
 def carregar_txt():
 
     try:
@@ -190,7 +190,7 @@ def editar():
             novo_valor = input("Novo valor: ")
 
             treinos[i-1][campo] = novo_valor
-            if novo_valor == "simulado hyrox":
+            if campo == "tipo" and novo_valor == "simulado hyrox":
 
                 qtd = int(input("Quantos exercícios de Hyrox deseja adicionar: "))
 
@@ -200,9 +200,9 @@ def editar():
 
                     add_exercicio(treinos[i-1])
 
-                salvar_txt()
+            salvar_txt()
 
-                print("Treino atualizado!\n")
+            print("Treino atualizado!\n")
 
         else:
             print("Campo inválido.\n")
@@ -305,7 +305,9 @@ def editar_exercicio():
     print("\nCampos disponíveis:")
 
     for chave in exercicio:
-        print(chave)
+
+        if chave != "nome":
+            print(chave)
 
     campo = input("\nDigite o campo que deseja editar: ")
 
