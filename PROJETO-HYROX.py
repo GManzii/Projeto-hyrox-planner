@@ -6,10 +6,32 @@ def salvar_txt():
 
         for treino in treinos:
 
-            linha = f"{treino['nome']};{treino['tipo']};{treino['duracao']};{treino['intensidade']};{treino['data']}\n"
+            lista_exercicios = []
+
+            for exercicio in treino["exercicios"]:
+
+                atributos = []
+
+                for chave, valor in exercicio.items():
+
+                    atributos.append(f"{chave}={valor}")
+
+                exercicio_txt = ",".join(atributos)
+
+                lista_exercicios.append(exercicio_txt)
+
+            exercicios_txt = "|".join(lista_exercicios)
+
+            linha = (
+                f"{treino['nome']};"
+                f"{treino['tipo']};"
+                f"{treino['duracao']};"
+                f"{treino['intensidade']};"
+                f"{treino['data']};"
+                f"{exercicios_txt}\n"
+            )
 
             arquivo.write(linha)
-
 def carregar_txt():
 
     try:
@@ -167,9 +189,19 @@ def editar():
             novo_valor = input("Novo valor: ")
 
             treinos[i-1][campo] = novo_valor
-            salvar_txt()
+            if novo_valor == "simulado hyrox":
 
-            print("Treino atualizado!\n")
+                qtd = int(input("Quantos exercícios de Hyrox deseja adicionar: "))
+
+                for j in range(qtd):
+
+                    print(f"\n----- {j+1}° exercício -----")
+
+                    add_exercicio(treinos[i-1])
+
+                salvar_txt()
+
+                print("Treino atualizado!\n")
 
         else:
             print("Campo inválido.\n")
