@@ -56,6 +56,24 @@ def carregar_txt():
                     "exercicios": []
                 }
 
+                if len(dados) > 5 and dados[5] != "":
+
+                    lista_exercicios = dados[5].split("|")
+
+                    for exercicio_txt in lista_exercicios:
+
+                        exercicio = {}
+
+                        atributos = exercicio_txt.split(",")
+
+                        for atributo in atributos:
+
+                            chave, valor = atributo.split("=")
+
+                            exercicio[chave] = valor
+
+                        treino["exercicios"].append(exercicio)
+
                 treinos.append(treino)
 
     except FileNotFoundError:
