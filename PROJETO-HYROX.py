@@ -32,6 +32,7 @@ def salvar_txt():
             )
 
             arquivo.write(linha)
+            
 def carregar_txt():
 
     try:
@@ -228,6 +229,99 @@ def remover():
     else:
         print("Treino não encontrado.\n")
 
+def remover_exercicio():
+
+    visualizar()
+
+    if not treinos:
+        return
+
+    treino_indice = int(input("\nDigite o número do treino: "))
+
+    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
+
+        print("Treino não encontrado.")
+        return
+
+    treino = treinos[treino_indice-1]
+
+    if len(treino["exercicios"]) == 0:
+
+        print("Esse treino não possui exercícios.")
+        return
+
+    print("\nExercícios:")
+
+    for i, exercicio in enumerate(treino["exercicios"]):
+
+        print(f"[{i+1}] - {exercicio['nome']}")
+
+    exercicio_indice = int(input("\nDigite o número do exercício que deseja remover: "))
+
+    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
+
+        print("Exercício não encontrado.")
+        return
+
+    treino["exercicios"].pop(exercicio_indice-1)
+
+    salvar_txt()
+
+    print("Exercício removido com sucesso!")
+
+def editar_exercicio():
+
+    visualizar()
+
+    if not treinos:
+        return
+
+    treino_indice = int(input("\nDigite o número do treino: "))
+
+    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
+        print("Treino não encontrado.")
+        return
+
+    treino = treinos[treino_indice-1]
+
+    if len(treino["exercicios"]) == 0:
+        print("Esse treino não possui exercícios.")
+        return
+
+    print("\nExercícios:")
+
+    for i, exercicio in enumerate(treino["exercicios"]):
+
+        print(f"[{i+1}] - {exercicio['nome']}")
+
+    exercicio_indice = int(input("\nDigite o número do exercício: "))
+
+    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
+        print("Exercício não encontrado.")
+        return
+
+    exercicio = treino["exercicios"][exercicio_indice-1]
+
+    print("\nCampos disponíveis:")
+
+    for chave in exercicio:
+        print(chave)
+
+    campo = input("\nDigite o campo que deseja editar: ")
+
+    if campo in exercicio:
+
+        novo_valor = input("Novo valor: ")
+
+        exercicio[campo] = novo_valor
+
+        salvar_txt()
+
+        print("Exercício atualizado!")
+
+    else:
+        print("Campo inválido.")
+
 carregar_txt()
 print("============== Hyrox Planner ==============")
 
@@ -238,7 +332,9 @@ while True:
     print("[2] - Visualizar treinos")
     print("[3] - Editar treino")
     print("[4] - Excluir treino")
-    print("[5] - Sair")
+    print("[5] - Editar exercício")
+    print("[6] - Excluir exercício")
+    print("[7] - Sair")
 
     op = int(input("\nEscolha: "))
 
@@ -257,8 +353,16 @@ while True:
     elif op == 4:
 
         remover()
-
+    
     elif op == 5:
+
+        editar_exercicio()
+
+    elif op == 6:
+
+        remover_exercicio()
+
+    elif op == 7:
 
         print("Programa encerrado.")
         break
