@@ -338,37 +338,41 @@ while True:
     print("[6] - Excluir exercício")
     print("[7] - Sair")
 
-    op = int(input("\nEscolha: "))
+    try:
+        op = int(input("\nEscolha: "))
+        if op == 1:
 
-    if op == 1:
+            add()
 
-        add()
+        elif op == 2:
 
-    elif op == 2:
+            visualizar()
 
-        visualizar()
+        elif op == 3:
 
-    elif op == 3:
+            editar()
 
-        editar()
+        elif op == 4:
 
-    elif op == 4:
-
-        remover()
+            remover()
     
-    elif op == 5:
+        elif op == 5:
 
-        editar_exercicio()
+            editar_exercicio()
 
-    elif op == 6:
+        elif op == 6:
 
-        remover_exercicio()
+            remover_exercicio()
 
-    elif op == 7:
+        elif op == 7:
 
-        print("Programa encerrado.")
-        break
+            print("Programa encerrado.")
+            break
 
-    else:
+        else:
+            print("Erro. Número selecionado não corresponde a nenhuma ação.")
+    except ValueError:
+        print("Digite apenas números.")
+    continue
 
-        print("Erro. Número selecionado não corresponde a nenhuma ação.")
+    
