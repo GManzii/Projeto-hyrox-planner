@@ -115,7 +115,6 @@ def add_exercicio(treino):
 
 #cadastra um treino completo coletando as informações do usuário
 def add():
-    #cria o dicionário básico coletando inputs e disparando a validação de data customizada
     treino = {
         "nome": input("Nome do treino: "),
         "tipo": input("Tipo de treino (corrida | força | simulado hyrox): "),
