@@ -1,7 +1,6 @@
 #importa o módulo para manipulação de datas
 from datetime import datetime
 
-#lista que armazena todos os treinos
 treinos = []
 
 #valida e garante que a data digitada não seja futura
@@ -62,7 +61,7 @@ def carregar_txt():
                     "exercicios": []
                 }
 
-                # Verifica se a linha lida possui a seção interna de exercícios cadastrados
+                #verifica se a linha lida possui a seção interna de exercícios cadastrados
                 if len(dados) > 5 and dados[5] != "":
 
                     lista_exercicios = dados[5].split("|")
@@ -269,10 +268,8 @@ def editar_exercicio():
     for i, exercicio in enumerate(treino["exercicios"]):
         print(f"[{i+1}] - {exercicio['nome']}")
 
-    # Coleta qual exercício de treino passará pelas alterações de valores
     exercicio_indice = int(input("\nDigite o número do exercício: "))
-
-    # Valida se o índice informado coincide com um exercício populado na memória
+    
     if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
         print("Exercício não encontrado.")
         return
