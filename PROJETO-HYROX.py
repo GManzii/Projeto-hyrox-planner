@@ -334,7 +334,9 @@ while True:
     print("[4] - Excluir treino")
     print("[5] - Editar exercício")
     print("[6] - Excluir exercício")
-    print("[7] - Sair")
+    print("[7] - Adicionar competição")
+    print("[8] - Visualizar competições")
+    print("[9] - Sair")
 
     try:
         op = int(input("\nEscolha: "))
@@ -351,7 +353,11 @@ while True:
             editar_exercicio()
         elif op == 6:
             remover_exercicio()
-        elif op == 7:
+        elif op == 7 :
+            cadastrar_competicao()
+        elif op == 8:
+            vizualizar_competicoes()
+        elif op == 9:
             print("Programa encerrado.")
             break
         else:
