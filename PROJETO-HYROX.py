@@ -307,6 +307,24 @@ def cadastrar_competicao():
     print("Competição cadastrada com sucesso!")
 
 
+#exibe na tela todas as competições salvas e os detalhes de cada uma
+def vizualizar_competicoes():
+    if not competicoes:
+        print("Nenhuma competição cadastrada.\n")
+    else:
+        print("\n--- Competições Cadastradas ---")
+
+        for i, competicao in enumerate(competicoes):
+            data_competicao = datetime.strptime(competicao["data"], "%d/%m/%y").date()
+            hoje = datetime.today().date
+            dias_faltando = (data_competicao - hoje).days
+
+            print(f"\n--- Ccompetição {i} ---")
+            print(f"Data: {competicao['data']}")
+            print(f"Local: {competicao['local']}")
+            print(f"Categoria: {competicao['categoria']}")
+            print(f"Faltam {dias_faltando} dias para o evento.")
+
 #Menu Hyrox
 print("============== Hyrox Planner ==============")
 while True:
