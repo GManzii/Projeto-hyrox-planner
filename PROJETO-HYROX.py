@@ -2,6 +2,7 @@
 from datetime import datetime
 
 treinos = []
+competicoes = []
 
 #valida e garante que a data digitada não seja futura
 def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
