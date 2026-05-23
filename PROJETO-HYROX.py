@@ -292,6 +292,21 @@ def editar_exercicio():
         print("Campo inválido.")
 
 carregar_txt()
+
+#cadastra uma competição completa coletando as informações do usuário
+def cadastrar_competicao():
+    print(f"\n--- Cadastrar Competição ---")
+
+    data = obter_data_valida()
+    local = input("Local da competição: ")
+    categoria = input("Categoria: ")
+
+    comperticao = {"data": data,"local": local,"categoria":categoria}
+
+    competicoes.append(comperticao)
+    print("Competição cadastrada com sucesso!")
+
+
 #Menu Hyrox
 print("============== Hyrox Planner ==============")
 while True:
