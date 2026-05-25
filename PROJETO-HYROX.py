@@ -364,5 +364,5 @@ while True:
             print("Erro. Número selecionado não corresponde a nenhuma ação.")
     except ValueError:
         #captura erros de digitação caso o usuário insira letras no menu
-        print("Digite apenas números.")
-    continue
+        print("Digite Apenas Números.")
+        continue
