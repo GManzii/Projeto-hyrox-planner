@@ -33,7 +33,7 @@ def obter_data_futura(mensagem="Data (DD/MM/AAAA): "):
             hoje = datetime.today().date()
             
             if data_formatada < hoje:
-                print("Erro: Não é permitido cadastrar treinos em datas passadas!")
+                print("Erro: Não é permitido cadastrar competições em datas passadas!")
             else:
                 return data_input 
         except ValueError:
