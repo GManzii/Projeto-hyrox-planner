@@ -12,7 +12,7 @@ O projeto surgiu com a iniciativa de facilitar o dia a dia de atletas ao fornece
 -alerta para o excesso de treinos;
 -ficha de cadastro de dores musculares;
 
-# Tecnologias usadas
+### Tecnologias usadas
 -python;
 
 
