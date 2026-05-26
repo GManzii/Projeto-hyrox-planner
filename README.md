@@ -10,7 +10,7 @@ O projeto surgiu com a iniciativa de facilitar o dia a dia de atletas ao fornece
 -acompanhar progresso;\
 -vizualizar histórico de treinos;\
 -alerta para o excesso de treinos;\
--ficha de cadastro de dores musculares;\
+-ficha de cadastro de dores musculares;
 
 ### Tecnologias usadas
 -python;
