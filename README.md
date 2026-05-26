@@ -1,5 +1,18 @@
 # Projeto-hyrox-planner
-Sistema em Python para organizar treinos e desempenho de atletas HYROX.
+Sistema para organizar treinos e arquivar o desempenho de atletas HYROX.
 
-## Como executar
-...
+## Sobre o Projeto
+O projeto surgiu com a iniciativa de facilitar o dia a dia de atletas ao fornecer um sistema de auxílio aos treinos.
+
+### Funcionalidades
+-cadastrar treinos e seus detalhes;
+-cadastrar exercícios específicos;
+-acompanhar progresso;
+-vizualizar histórico de treinos;
+-alerta para o excesso de treinos;
+-ficha de cadastro de dores musculares;
+
+# Tecnologias usadas
+-python;
+
+
