@@ -22,6 +22,23 @@ def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
         except ValueError:
             print("Erro: Formato de data inválido! Use o formato DD/MM/AAAA (Ex: 15/05/2024).")
 
+def obter_data_futura(mensagem="Data (DD/MM/AAAA): "):
+    while True:
+
+        data_input = input(mensagem)
+        try:
+            #converte o texto recebido para o formato de data (dia/mês/ano)
+            data_formatada = datetime.strptime(data_input, "%d/%m/%Y").date()
+            #captura a data atual do sistema
+            hoje = datetime.today().date()
+            
+            if data_formatada < hoje:
+                print("Erro: Não é permitido cadastrar treinos em datas passadas!")
+            else:
+                return data_input 
+        except ValueError:
+            print("Erro: Formato de data inválido! Use o formato DD/MM/AAAA (Ex: 15/05/2024).")
+
 def salvar_txt():
     with open("HYROX.txt", "w", encoding="utf-8") as arquivo:
         for treino in treinos:
@@ -297,7 +314,7 @@ carregar_txt()
 def cadastrar_competicao():
     print(f"\n--- Cadastrar Competição ---")
 
-    data = obter_data_valida()
+    data = obter_data_futura()
     local = input("Local da competição: ")
     categoria = input("Categoria: ")
 
