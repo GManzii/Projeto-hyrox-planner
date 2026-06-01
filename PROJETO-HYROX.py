@@ -341,6 +341,116 @@ def vizualizar_competicoes():
             print(f"Local: {competicao['local']}")
             print(f"Categoria: {competicao['categoria']}")
             print(f"Faltam {dias_faltando} dias para o evento.")
+            
+#acompanha a evolução entre a data mais antiga e a mais nova
+def acompanhar_evolucoes(treinos):
+ if not treinos:
+    print(" Nenhum treino cadastrado.")
+    return
+ 
+ print("\nEVOLUÇÃO")
+ print("===================================")
+
+ total_treinos = len(treinos)
+ semanas = set()
+ for treino in treinos:
+    data = datetime.strptime(
+        treino["data"],
+        "%d/%m/%Y"
+    )
+    semana = data.isocalendar()[1]
+    semanas.add(semana)
+
+ total_semanas = len(semanas)
+
+ if total_semanas > 0:
+    frequencia = total_treinos // total_semanas
+
+    if total_treinos % total_semanas != 0:
+        frequencia += 1
+ else:
+    frequencia = 0
+
+ print(f"\n FREQUÊNCIA SEMANAL: \n {frequencia} treino(s) por semana")
+
+ treinos_ordenados = sorted(
+    treinos,
+    key=lambda treino: datetime.strptime(
+        treino["data"],
+        "%d/%m/%Y"
+    )
+ )
+ primeiro_tempo = None
+ ultimo_tempo = None
+
+ for treino in treinos_ordenados:
+    if "duracao" in treino:
+        try:
+            tempo = float(treino["duracao"])
+
+            if primeiro_tempo is None:
+                primeiro_tempo = tempo
+            ultimo_tempo = tempo
+
+        except ValueError:
+            pass
+
+ print("\n EVOLUÇÃO DE TEMPOS:")
+
+ if primeiro_tempo is not None and ultimo_tempo is not None:
+
+    print(f" Primeiro treino: {primeiro_tempo} minutos")
+    print(f" Último treino: {ultimo_tempo} minutos")
+
+    diferenca_tempo = ultimo_tempo - primeiro_tempo
+
+    if diferenca_tempo < 0:
+     print(f" Piorou: {abs(diferenca_tempo)} minutos")
+    elif diferenca_tempo > 0:
+     print(f" Evoluiu: {diferenca_tempo} minutos")
+    else:
+     print(" Permaneceu igual")
+
+ else:
+     print(" Nenhum tempo registrado")
+
+ primeira_carga = None
+ ultima_carga = None
+
+ for treino in treinos_ordenados:
+    for exercicio in treino["exercicios"]:
+
+        if "carga" in exercicio:
+            try:
+                carga = float(exercicio["carga"])
+
+                if primeira_carga is None:
+                    primeira_carga = carga
+
+                ultima_carga = carga
+
+            except ValueError:
+                pass
+
+ print("\n EVOLUÇÃO DE CARGAS:")
+
+ if primeira_carga is not None and ultima_carga is not None:
+
+    print(f" Primeiro treino: {primeira_carga} kg")
+    print(f" Último treino: {ultima_carga} kg")
+
+    diferenca_carga = ultima_carga - primeira_carga
+
+    if diferenca_carga > 0:
+     print(f" Evoluiu: {diferenca_carga} kg")
+    elif diferenca_carga < 0:
+     print(f" Piorou: {abs(diferenca_carga)} kg")
+    else:
+     print(" Permaneceu igual")
+
+ else:
+    print(" Nenhuma carga registrada")
+
 
 #Menu Hyrox
 print("============== Hyrox Planner ==============")
@@ -353,7 +463,8 @@ while True:
     print("[6] - Excluir exercício")
     print("[7] - Adicionar competição")
     print("[8] - Visualizar competições")
-    print("[9] - Sair")
+    print("[9] - acompanhar evolução")
+    print("[10] - Sair")
 
     try:
         op = int(input("\nEscolha: "))
@@ -375,6 +486,8 @@ while True:
         elif op == 8:
             vizualizar_competicoes()
         elif op == 9:
+            acompanhar_evolucoes(treinos)
+        elif op == 10:
             print("Programa encerrado.")
             break
         else:
@@ -383,3 +496,5 @@ while True:
         #captura erros de digitação caso o usuário insira letras no menu
         print("Digite apenas números.")
     continue
+
+
