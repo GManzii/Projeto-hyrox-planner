@@ -463,7 +463,7 @@ while True:
     print("[6] - Excluir exercício")
     print("[7] - Adicionar competição")
     print("[8] - Visualizar competições")
-    print("[9] - acompanhar evolução")
+    print("[9] - Acompanhar evolução")
     print("[10] - Sair")
 
     try:
