@@ -96,7 +96,7 @@ def carregar_txt():
     except FileNotFoundError:
         pass
 
-    #salva todas as competições em arquivo (uma por linha: data;local;categoria)
+#salva todas as competições em arquivo (uma por linha: data;local;categoria)
 def salvar_competicoes_txt():
     with open("COMPETICOES.txt", "w", encoding="utf-8") as arquivo:
         for competicao in competicoes:
@@ -227,7 +227,7 @@ def editar():
 
     if i-1 >= 0 and i-1 < len(treinos):
         print("\nCampos disponíveis:")
-        print("Nome | Tipo | Duração | Intensidade | Data")
+        print("Nome | Tipo | Duracao | Intensidade | Data")
 
         campo = input("Digite o campo que será editado: ").lower()
 
@@ -268,9 +268,78 @@ def remover():
         print("Treino não encontrado.\n")
 
 def remover_exercicio():
+    visualizar()
+    if not treinos:
+        return
+
+    treino_indice = int(input("\nDigite o número do treino: "))
+
+    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
+        print("Treino não encontrado.")
+        return
+
+    treino = treinos[treino_indice-1]
+
+    if len(treino["exercicios"]) == 0:
+        print("Esse treino não possui exercícios.")
+        return
+
+    print("\nExercícios:")
+    for i, exercicio in enumerate(treino["exercicios"]):
+        print(f"[{i+1}] - {exercicio['nome']}")
+
+    exercicio_indice = int(input("\nDigite o número do exercício que deseja remover: "))
+
+    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
+        print("Exercício não encontrado.")
+        return
+
+    treino["exercicios"].pop(exercicio_indice-1)
+    salvar_txt()
     print("Exercício removido com sucesso!")
 
 def editar_exercicio():
+    visualizar()
+    if not treinos:
+        return
+
+    treino_indice = int(input("\nDigite o número do treino: "))
+
+    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
+        print("Treino não encontrado.")
+        return
+
+    treino = treinos[treino_indice-1]
+
+    if len(treino["exercicios"]) == 0:
+        print("Esse treino não possui exercícios.")
+        return
+
+    print("\nExercícios:")
+    for i, exercicio in enumerate(treino["exercicios"]):
+        print(f"[{i+1}] - {exercicio['nome']}")
+
+    exercicio_indice = int(input("\nDigite o número do exercício: "))
+   
+    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
+        print("Exercício não encontrado.")
+        return
+
+    exercicio = treino["exercicios"][exercicio_indice-1]
+    print("\nCampos disponíveis:")
+
+    for chave in exercicio:
+        if chave != "nome":
+            print(chave)
+
+    campo = input("\nDigite o campo que deseja editar: ")
+
+    if campo in exercicio:
+        novo_valor = input("Novo valor: ")
+        exercicio[campo] = novo_valor
+        salvar_txt()
+        print("Exercício atualizado!")
+    else:
         print("Campo inválido.")
 
 #cadastra uma competição completa coletando as informações do usuário
@@ -416,8 +485,110 @@ def vizualizar_competicoes():
             print(f"Faltam {dias_faltando} dias para o evento.")
 
 #para gerar sugestões baseadas no nível do atleta
-def sugestoes( ):
-    print()
+def sugestoes():
+    print ("\n--- Sugestões Personalizadas ---")
+    nivel = input("Insira o seu nível: (iniciante; intermediário; avançado ):\n").strip().lower()
+
+    #aceita tanto com acento quanto sem acento
+    if nivel == "intermediário":
+        nivel = "intermediario"
+    if nivel == "avançado":
+        nivel = "avancado"
+    
+    if nivel != "iniciante" and nivel != "intermediario" and nivel != "avancado":
+        print ("\nNível inválido. Escolha entre iniciante, intermediário, avançado ")
+        return
+    #analisar os resultados anteriores
+    total_treinos = len(treinos)
+
+    corridas = 0
+    forcas = 0
+    simulados = 0
+
+    for treino in treinos:
+       tipo = treino["tipo"].lower()
+       if tipo == "corrida":
+        corridas +=1
+       elif tipo == "força":
+        forcas +=1
+       elif tipo == "simulado hyrox":
+        simulados += 1
+
+#armazena a maior carga atingida em cada exercicio
+    maiores_cargas = {}
+    for treino in treinos:
+        for exercicio in treino["exercicios"]:
+            if "carga" in exercicio:
+                try:
+                    carga = float(exercicio["carga"])
+                except ValueError:
+                    continue
+                nome = exercicio["nome"]
+                if nome not in maiores_cargas or carga > maiores_cargas[nome]:
+                    maiores_cargas[nome] = carga
+
+    print(f"\nResumo até agora: {total_treinos} treino(s) cadastrado(s).")
+    print(f"Corrida: {corridas} | Força: {forcas} | Simulado HYROX: {simulados}")
+
+# divisão semanal ideal por nível 
+    divisao = {
+        "iniciante": [
+            "Segunda, sugestao: Corrida leve 20-30 min",
+            "Quarta, sugestao: Força full body (agachamento, remada, core)",
+            "Sábado, sugestao: Simulado HYROX curto (3 a 4 estações)"
+        ],
+        "intermediario": [
+            "Segunda, sugestao: Corrida intervalada (ex: 6x400m)",
+            "Terça, sugestao: Força de pernas + core",
+            "Quinta, sugestao: Força de superiores + pegada (grip)",
+            "Sexta, sugestao: Corrida longa contínua",
+            "Sábado, sugestao: Simulado HYROX completo"
+        ],
+        "avancado": [
+            "Segunda, sugestao: Corrida intervalada forte",
+            "Terça, sugestao: Força pesada de pernas",
+            "Quarta, sugestao: Transições corrida + estação (compromised running)",
+            "Quinta, sugestao: Força de superiores + pegada",
+            "Sexta, sugestao: Corrida longa em ritmo de prova",
+            "Sábado, sugestao: Simulado HYROX completo cronometrado"
+        ]
+    }
+
+    print(f"\nDivisão semanal sugerida ({nivel}):")
+    for dia in divisao[nivel]:
+        print(f"- {dia}")
+
+# cargas ideais por nível; se já houver registro, sugere progressão de 5% 
+    cargas_base = {
+        "iniciante": {"sled push": 50, "sled pull": 50, "wall balls": 4, "farmer's carry": 16},
+        "intermediario": {"sled push": 75, "sled pull": 75, "wall balls": 6, "farmer's carry": 20},
+        "avancado": {"sled push": 100, "sled pull": 100, "wall balls": 9, "farmer's carry": 24}
+    }
+    print(f"\nCargas ideais sugeridas  para ({nivel}):")
+    for exercicio_nome, carga_base in cargas_base[nivel].items():
+        if exercicio_nome in maiores_cargas:
+            atual = maiores_cargas[exercicio_nome]
+            meta = round(atual * 1.05, 1)
+            print(f"- {exercicio_nome}: você já fez {atual} kg, tente progredir para {meta} kg")
+        else:
+            print(f"- {exercicio_nome}: comece com cerca de {carga_base} kg")
+
+ #estratégias por etapa do HYROX 
+    print("\nEstratégias por etapa do HYROX:")
+    print("- Corrida: mantenha ritmo constante, não comece rápido demais")
+    print("- Sled push/pull: passos curtos e fortes, tronco firme")
+    print("- Burpee broad jumps: economize energia, salto controlado")
+    print("- Wall balls: respiração  ritmada e mire sempre no mesmo ponto")
+    print("- Farmer's carry: pegada firme, ombros para trás e passo constante")
+
+# dica geral com base na frequência de treinos 
+    print("\nDica geral:")
+    if total_treinos < 3:
+      print("Você tem poucos treinos registrados. Foque em criar consistência (3x por semana).")
+    elif simulados == 0:
+        print("Inclua pelo menos 1 simulado HYROX por semana para treinar as transições.")
+    else:
+        print("Boa frequência! Foque em melhorar tempos e progredir cargas aos poucos.")
 
 carregar_txt()
 carregar_competicoes_txt() 
@@ -425,42 +596,71 @@ carregar_competicoes_txt()
 #Menu Hyrox
 print("============== Hyrox Planner ==============")
 while True:
-    print("\n[1] - Adicionar treino")
-    print("[2] - Visualizar treinos")
-    print("[3] - Editar treino")
-    print("[4] - Excluir treino")
-    print("[5] - Editar exercício")
-    print("[6] - Excluir exercício")
-    print("[7] - Adicionar competição")
-    print("[8] - Visualizar competições")
-    print("[9] - Sugestões personalizadas")
-    print("[9] - Acompanhar evolução")
-    print("[11] - Sair")
+    print("\n[1] - Gerenciar treinos")
+    print("[2] - Visualizar treinos e exercícios")
+    print("[3] - Gerenciar exercícios")
+    print("[4] - Gerenciar competições")
+    print("[5] - Sugestões personalizadas")
+    print("[6] - Acompanhar evolução")
+    print("[7] - Sair")
 
     try:
         op = int(input("\nEscolha: "))
 
         if op == 1:
-            add()
+            print("\n[1] - Adicionar treino")
+            print("[2] - Editar treino")
+            print("[3] - Excluir treino")
+            try:
+                optreino = int(input("\nEscolha: "))
+                if optreino == 1:
+                    add()
+                elif optreino == 2:
+                    editar()
+                elif optreino == 3:
+                    remover()
+                else:
+                    print("Opção inválida")
+                continue
+            except ValueError:
+                print("Digite apenas números.")
+
         elif op == 2:
             visualizar()
+
         elif op == 3:
-            editar()
+            print("[1] - Editar exercício")
+            print("[2] - Excluir exercício")
+            try:
+                opexer = int(input("\nEscolha: "))
+                if opexer == 1:
+                    editar_exercicio()
+                elif opexer == 2:
+                    remover_exercicio()
+                else:
+                    print("Opção inválida")
+                continue
+            except ValueError:
+                print("Digite apenas números.")
         elif op == 4:
-            remover()
+            print("[1] - Adicionar competição")
+            print("[2] - Visualizar competições")
+            try:
+                opexer = int(input("\nEscolha: "))
+                if opexer == 1:
+                    cadastrar_competicao()
+                elif opexer == 2:
+                    vizualizar_competicoes()
+                else:
+                    print("Opção inválida")
+                continue
+            except ValueError:
+                print("Digite apenas números.")
         elif op == 5:
-            editar_exercicio()
-        elif op == 6:
-            remover_exercicio()
-        elif op == 7:
-            cadastrar_competicao()
-        elif op == 8:
-            vizualizar_competicoes()
-        elif op == 9:
             sugestoes()
-        elif op == 10:
+        elif op == 6:
             acompanhar_evolucoes(treinos)
-        elif op == 11:
+        elif op == 7:
             print("Programa encerrado.")
             break
         else:
