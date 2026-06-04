@@ -1,5 +1,3 @@
-
-#importa o módulo para manipulação de datas
 from datetime import datetime
 
 treinos = []
@@ -8,12 +6,10 @@ competicoes = []
 #valida e garante que a data digitada não seja futura
 def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
     while True:
-
         data_input = input(mensagem)
         try:
             #converte o texto recebido para o formato de data (dia/mês/ano)
             data_formatada = datetime.strptime(data_input, "%d/%m/%Y").date()
-            #captura a data atual do sistema
             hoje = datetime.today().date()
            
             if data_formatada > hoje:
@@ -25,12 +21,9 @@ def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
 
 def obter_data_futura(mensagem="Data (DD/MM/AAAA): "):
     while True:
-
         data_input = input(mensagem)
         try:
-            #converte o texto recebido para o formato de data (dia/mês/ano)
             data_formatada = datetime.strptime(data_input, "%d/%m/%Y").date()
-            #captura a data atual do sistema
             hoje = datetime.today().date()
            
             if data_formatada < hoje:
@@ -79,7 +72,6 @@ def carregar_txt():
                     "data": dados[4],
                     "exercicios": []
                 }
-
                 #verifica se a linha lida possui a seção interna de exercícios cadastrados
                 if len(dados) > 5 and dados[5] != "":
 
@@ -91,7 +83,6 @@ def carregar_txt():
                             chave, valor = atributo.split("=")
                             exercicio[chave] = valor
                         treino["exercicios"].append(exercicio)
-
                 treinos.append(treino)
     except FileNotFoundError:
         pass
@@ -348,7 +339,7 @@ def cadastrar_competicao():
 
     data = obter_data_futura()
     local = input("Local da competição: ")
-    categoria = input("Categoria: ")
+    categoria = input("Categoria(iniciante, intermediário ou avançado): ")
 
     comperticao = {"data": data,"local": local,"categoria":categoria}
 
@@ -590,82 +581,133 @@ def sugestoes():
     else:
         print("Boa frequência! Foque em melhorar tempos e progredir cargas aos poucos.")
 
+#adaptação caso haja lesão
+def gerenciar_lesoes():
+    print("\n============= Intervenção de lesões =============")
+    print("Selecione a região onde apresenta dor, desconforto ou lesão:")
+    print("[1] - Joelho")
+    print("[2] - Ombro")
+    print("[3] - Lombar/Coluna Vertebral")
+    print("[4] - Panturrilha")
+    print("[5] - Voltar ao menu principal")
+    
+    try:
+        opcao = int(input("\nEscolha uma opção: "))
+        if opcao == 1:
+            print("\nPROTOCOLO RECUPERAÇÃO ATIVA: JOELHO")
+            print("\nDiretriz de Treino:")
+            print("  Reduzir o impacto repetitivo.")
+            print("\nO que você PODE cadastrar no sistema atualmente:")
+            print("  - Treino de força (focado em membros superiores)")
+            print("  - Exercícios HYROX permitidos:")
+            print("    * sled pull (com passos controlados para trás)")
+            print("    * farmer's carry (com passos curtos e controlados)")
+            print("\nO que você DEVE EVITAR cadastrar:")
+            print("  - wall balls")
+            print("  - burpee broad jumps")
+            print("  - treino de corrida")
+            
+        elif opcao == 2:
+            print("\nPROTOCOLO RECUPERAÇÃO ATIVA: OMBRO")
+            print("\nDiretriz de treino:")
+            print("  Evitar posições de impacto articular e lançamentos.")
+            print("\nO que você PODE cadastrar no sistema atualmente:")
+            print("  - Treino de corrida")
+            print("  - Exercícios HYROX permitidos:")
+            print("    * sled push (mantenha os braços esticados e firmes, empurrando com as pernas)")
+            print("    * farmer's carry (melhora a estabilidade isométrica e estática do ombro)")
+            print("\nO que você DEVE EVITAR cadastrar (não selecione no Simulado HYROX):")
+            print("  - wall balls")
+            print("  - burpee broad jumps")
+            print("  - sled pull")
+            
+        elif opcao == 3:
+            print("\nPROTOCOLO RECUPERAÇÃO ATIVA: LOMBAR")
+            print("\nDiretriz de treino:")
+            print("  Manutenção da coluna neutra e proteção de discos intervertebrais.")
+            print("\nO que você PODE cadastrar no sistema atualmente:")
+            print("  - Tipo de treino: corrida (em ritmo leve/moderado e postura ereta)")
+            print("  - Exercícios HYROX permitidos:")
+            print("    * farmer's carry (mantendo postura ereta e carga moderada)")
+            print("    * wall balls (com coluna alinhada durante o agachamento)")
+            print("\nO que você DEVE EVITAR cadastrar (não selecione no Simulado HYROX):")
+            print("  - burpee broad jumps")
+            print("  - sled push")
+            print("  - treino de força")
+        
+        elif opcao == 4:
+            print("\nPROTOCOLO RECUPERAÇÃO ATIVA: PANTURRILHA")
+            print("\nDiretriz de Treino:")
+            print("  Reduzir a força de propulsão explosiva e a sobrecarga no tendão de Aquiles.")
+            print("\nO que você PODE cadastrar no sistema atualmente:")
+            print("  - Tipo de treino: força (exercícios isolados de membros superiores ou tronco)")
+            print("  - Exercícios HYROX permitidos:")
+            print("    * wall balls (com calcanhares firmes no chão, sem estender a panturrilha no final)")
+            print("    * sled pull (puxando o peso de forma controlada)")
+            print("\nO que você DEVE EVITAR cadastrar (não selecione no Simulado HYROX):")
+            print("  - treino de corrida")
+            print("  - burpee broad jumps")
+            print("  - sled push e farmer's carry")
+        
+        elif opcao == 5:
+            return
+        else:
+            print("Opção inválida.")
+    except ValueError:
+        print("Entrada inválida. Digite um número válido.")
+
 carregar_txt()
 carregar_competicoes_txt() 
 
 #Menu Hyrox
 print("============== Hyrox Planner ==============")
 while True:
-    print("\n[1] - Gerenciar treinos")
-    print("[2] - Visualizar treinos e exercícios")
-    print("[3] - Gerenciar exercícios")
-    print("[4] - Gerenciar competições")
+    print("\n[1] - Gerenciar treinos e exercícios")
+    print("[2] - Visualizar treinos")
+    print("[3] - Adicionar competição")
+    print("[4] - Visualizar competições")
     print("[5] - Sugestões personalizadas")
-    print("[6] - Acompanhar evolução")
+    print("[6] - Indicar lesão (Adaptar treinos)")
     print("[7] - Sair")
 
     try:
         op = int(input("\nEscolha: "))
-
         if op == 1:
-            print("\n[1] - Adicionar treino")
-            print("[2] - Editar treino")
-            print("[3] - Excluir treino")
-            try:
-                optreino = int(input("\nEscolha: "))
-                if optreino == 1:
+            while True:
+                print("\n[1] - Adicionar treino")
+                print("[2] - Editar treino")
+                print("[3] - Excluir treino")
+                print("[4] - Editar exercício")
+                print("[5] - Excluir exercício")
+                print('[6] - Voltar ao menu principal')
+                num = int(input("Digite o código referente ao que deve ser feito: "))
+                if num==1:
                     add()
-                elif optreino == 2:
+                elif num == 2:
                     editar()
-                elif optreino == 3:
+                elif num == 3:
                     remover()
-                else:
-                    print("Opção inválida")
-                continue
-            except ValueError:
-                print("Digite apenas números.")
-
+                elif num == 4:
+                    editar_exercicio()
+                elif num == 5:
+                    remover_exercicio()
+                elif num == 6:
+                    break
         elif op == 2:
             visualizar()
-
         elif op == 3:
-            print("[1] - Editar exercício")
-            print("[2] - Excluir exercício")
-            try:
-                opexer = int(input("\nEscolha: "))
-                if opexer == 1:
-                    editar_exercicio()
-                elif opexer == 2:
-                    remover_exercicio()
-                else:
-                    print("Opção inválida")
-                continue
-            except ValueError:
-                print("Digite apenas números.")
+            cadastrar_competicao()
         elif op == 4:
-            print("[1] - Adicionar competição")
-            print("[2] - Visualizar competições")
-            try:
-                opexer = int(input("\nEscolha: "))
-                if opexer == 1:
-                    cadastrar_competicao()
-                elif opexer == 2:
-                    vizualizar_competicoes()
-                else:
-                    print("Opção inválida")
-                continue
-            except ValueError:
-                print("Digite apenas números.")
+            vizualizar_competicoes()
         elif op == 5:
             sugestoes()
         elif op == 6:
-            acompanhar_evolucoes(treinos)
+            gerenciar_lesoes()
         elif op == 7:
             print("Programa encerrado.")
             break
         else:
             print("Erro. Número selecionado não corresponde a nenhuma ação.")
     except ValueError:
-        #captura erros de digitação caso o usuário insira letras no menu
         print("Digite apenas números.")
     continue
