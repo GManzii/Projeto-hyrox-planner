@@ -2,6 +2,7 @@ from datetime import datetime
 
 treinos = []
 competicoes = []
+lesao_atual = None  #armazena globalmente a lesão selecionada pelo usuário
 
 #valida e garante que a data digitada não seja futura
 def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
@@ -122,9 +123,24 @@ def carregar_competicoes_txt():
 
 #adiciona novo exercício e seus dados dentro de um treino
 def add_exercicio(treino):
+    global lesao_atual
+
     nome = input(
         "Nome do exercício (sled push | sled pull | burpee broad jumps | wall balls | farmer's carry): "
-    ).lower()
+    ).lower().strip()
+
+    # --- VERIFICAÇÃO DE EXERCÍCIOS PROIBIDOS POR LESÃO ---
+    # Mapeia os exercícios que devem ser evitados para cada opção de lesão
+    restricoes = {
+        1: ["wall balls", "burpee broad jumps"],          # Joelho
+        2: ["wall balls", "burpee broad jumps", "sled pull"], # Ombro
+        3: ["burpee broad jumps", "sled push"],          # Lombar
+        4: ["burpee broad jumps", "sled push", "farmer's carry"] # Panturrilha
+    }
+
+    if lesao_atual in restricoes:
+        if nome in restricoes[lesao_atual]:
+            print("\n[ALERTA] Este é um tipo de exercício que deve ser evitado por sua lesão.\n")
 
     exercicio = {
         "nome": nome
@@ -229,7 +245,7 @@ def editar():
                 novo_valor = input("Novo valor: ")
 
             treinos[i-1][campo] = novo_valor
-           
+            
             #cadastro de exercícios caso a nova categoria mude o tipo para simulado hyrox
             if campo == "tipo" and novo_valor == "simulado hyrox":
                 qtd = int(input("Quantos exercícios de Hyrox deseja adicionar: "))
@@ -238,7 +254,7 @@ def editar():
                     add_exercicio(treinos[i-1])
 
             salvar_txt()
-            print("Treino atualizado!\n")
+            print("Treino updated!\n")
         else:
             print("Campo inválido.\n")
     else:
@@ -348,115 +364,6 @@ def cadastrar_competicao():
     salvar_competicoes_txt()
     print("Competição cadastrada com sucesso!")
 
-#acompanha a evolução entre a data mais antiga e a mais nova
-def acompanhar_evolucoes(treinos):
- if not treinos:
-    print(" Nenhum treino cadastrado.")
-    return
- 
- print("\nEVOLUÇÃO")
- print("===================================")
-
- total_treinos = len(treinos)
- semanas = set()
- for treino in treinos:
-    data = datetime.strptime(
-        treino["data"],
-        "%d/%m/%Y"
-    )
-    semana = data.isocalendar()[1]
-    semanas.add(semana)
-
- total_semanas = len(semanas)
-
- if total_semanas > 0:
-    frequencia = total_treinos // total_semanas
-
-    if total_treinos % total_semanas != 0:
-        frequencia += 1
- else:
-    frequencia = 0
-
- print(f"\n FREQUÊNCIA SEMANAL: \n {frequencia} treino(s) por semana")
-
- treinos_ordenados = sorted(
-    treinos,
-    key=lambda treino: datetime.strptime(
-        treino["data"],
-        "%d/%m/%Y"
-    )
- )
- primeiro_tempo = None
- ultimo_tempo = None
-
- for treino in treinos_ordenados:
-    if "duracao" in treino:
-        try:
-            tempo = float(treino["duracao"])
-
-            if primeiro_tempo is None:
-                primeiro_tempo = tempo
-            ultimo_tempo = tempo
-
-        except ValueError:
-            pass
-
- print("\n EVOLUÇÃO DE TEMPOS:")
-
- if primeiro_tempo is not None and ultimo_tempo is not None:
-
-    print(f" Primeiro treino: {primeiro_tempo} minutos")
-    print(f" Último treino: {ultimo_tempo} minutos")
-
-    diferenca_tempo = ultimo_tempo - primeiro_tempo
-
-    if diferenca_tempo < 0:
-     print(f" Piorou: {abs(diferenca_tempo)} minutos")
-    elif diferenca_tempo > 0:
-     print(f" Evoluiu: {diferenca_tempo} minutos")
-    else:
-     print(" Permaneceu igual")
-
- else:
-     print(" Nenhum tempo registrado")
-
- primeira_carga = None
- ultima_carga = None
-
- for treino in treinos_ordenados:
-    for exercicio in treino["exercicios"]:
-
-        if "carga" in exercicio:
-            try:
-                carga = float(exercicio["carga"])
-
-                if primeira_carga is None:
-                    primeira_carga = carga
-
-                ultima_carga = carga
-
-            except ValueError:
-                pass
-
- print("\n EVOLUÇÃO DE CARGAS:")
-
- if primeira_carga is not None and ultima_carga is not None:
-
-    print(f" Primeiro treino: {primeira_carga} kg")
-    print(f" Último treino: {ultima_carga} kg")
-
-    diferenca_carga = ultima_carga - primeira_carga
-
-    if diferenca_carga > 0:
-     print(f" Evoluiu: {diferenca_carga} kg")
-    elif diferenca_carga < 0:
-     print(f" Piorou: {abs(diferenca_carga)} kg")
-    else:
-     print(" Permaneceu igual")
-
- else:
-    print(" Nenhuma carga registrada")
-
 #exibe na tela todas as competições salvas e os detalhes de cada uma
 def vizualizar_competicoes():
     if not competicoes:
@@ -468,6 +375,162 @@ def vizualizar_competicoes():
             data_competicao = datetime.strptime(competicao["data"], "%d/%m/%Y").date()
             hoje = datetime.today().date()
             dias_faltando = (data_competicao - hoje).days
+
+            print(f"\n--- Ccompetição {i+1} ---")
+            print(f"Data: {competicao['data']}")
+            print(f"Local: {competicao['local']}")
+            print(f"Categoria: {competicao['categoria']}")
+            print(f"Faltam {dias_faltando} dias para o evento.")
+            #acompanha a evolução entre a data mais antiga e a mais nova
+def acompanhar_evolucoes(treinos):
+ if not treinos:
+    print(" Nenhum treino cadastrado.")
+    return
+ 
+ print("\nEVOLUÇÃO")
+ print("===================================")
+
+
+ total_treinos = len(treinos)
+ semanas = set()
+ for treino in treinos:
+    data = datetime.strptime(
+        treino["data"],
+        "%d/%m/%Y"
+    )
+    semana = data.isocalendar()[1]
+    semanas.add(semana)
+
+
+ total_semanas = len(semanas)
+
+
+ if total_semanas > 0:
+    frequencia = total_treinos // total_semanas
+
+
+    if total_treinos % total_semanas != 0:
+        frequencia += 1
+ else:
+    frequencia = 0
+
+
+ print(f"\n FREQUÊNCIA SEMANAL: \n {frequencia} treino(s) por semana")
+
+
+ treinos_ordenados = sorted(
+    treinos,
+    key=lambda treino: datetime.strptime(
+        treino["data"],
+        "%d/%m/%Y"
+    )
+ )
+ primeiro_tempo = None
+ ultimo_tempo = None
+
+
+ for treino in treinos_ordenados:
+    if "duracao" in treino:
+        try:
+            tempo = float(treino["duracao"])
+
+
+            if primeiro_tempo is None:
+                primeiro_tempo = tempo
+            ultimo_tempo = tempo
+
+
+        except ValueError:
+            pass
+
+
+ print("\n EVOLUÇÃO DE TEMPOS:")
+
+
+ if primeiro_tempo is not None and ultimo_tempo is not None:
+
+
+    print(f" Primeiro treino: {primeiro_tempo} minutos")
+    print(f" Último treino: {ultimo_tempo} minutos")
+
+
+    diferenca_tempo = ultimo_tempo - primeiro_tempo
+
+
+    if diferenca_tempo < 0:
+     print(f" Piorou: {abs(diferenca_tempo)} minutos")
+    elif diferenca_tempo > 0:
+     print(f" Evoluiu: {diferenca_tempo} minutos")
+    else:
+     print(" Permaneceu igual")
+
+
+ else:
+     print(" Nenhum tempo registrado")
+
+
+ primeira_carga = None
+ ultima_carga = None
+
+
+ for treino in treinos_ordenados:
+    for exercicio in treino["exercicios"]:
+
+
+        if "carga" in exercicio:
+            try:
+                carga = float(exercicio["carga"])
+
+
+                if primeira_carga is None:
+                    primeira_carga = carga
+
+
+                ultima_carga = carga
+
+
+            except ValueError:
+                pass
+
+
+ print("\n EVOLUÇÃO DE CARGAS:")
+
+
+ if primeira_carga is not None and ultima_carga is not None:
+
+
+    print(f" Primeiro treino: {primeira_carga} kg")
+    print(f" Último treino: {ultima_carga} kg")
+
+
+    diferenca_carga = ultima_carga - primeira_carga
+
+
+    if diferenca_carga > 0:
+     print(f" Evoluiu: {diferenca_carga} kg")
+    elif diferenca_carga < 0:
+     print(f" Piorou: {abs(diferenca_carga)} kg")
+    else:
+     print(" Permaneceu igual")
+
+
+ else:
+    print(" Nenhuma carga registrada")
+
+
+#exibe na tela todas as competições salvas e os detalhes de cada uma
+def vizualizar_competicoes():
+    if not competicoes:
+        print("Nenhuma competição cadastrada.\n")
+    else:
+        print("\n--- Competições Cadastradas ---")
+
+
+        for i, competicao in enumerate(competicoes):
+            data_competicao = datetime.strptime(competicao["data"], "%d/%m/%Y").date()
+            hoje = datetime.today().date()
+            dias_faltando = (data_competicao - hoje).days
+
 
             print(f"\n--- Ccompetição {i+1} ---")
             print(f"Data: {competicao['data']}")
@@ -521,7 +584,7 @@ def sugestoes():
     print(f"\nResumo até agora: {total_treinos} treino(s) cadastrado(s).")
     print(f"Corrida: {corridas} | Força: {forcas} | Simulado HYROX: {simulados}")
 
-# divisão semanal ideal por nível 
+#divisão semanal ideal por nível 
     divisao = {
         "iniciante": [
             "Segunda, sugestao: Corrida leve 20-30 min",
@@ -583,16 +646,21 @@ def sugestoes():
 
 #adaptação caso haja lesão
 def gerenciar_lesoes():
+    global lesao_atual
     print("\n============= Intervenção de lesões =============")
     print("Selecione a região onde apresenta dor, desconforto ou lesão:")
     print("[1] - Joelho")
     print("[2] - Ombro")
     print("[3] - Lombar/Coluna Vertebral")
     print("[4] - Panturrilha")
-    print("[5] - Voltar ao menu principal")
+    print("[5] - Nenhuma Lesão (Limpar Histórico)")
+    print("[6] - Voltar ao menu principal")
     
     try:
         opcao = int(input("\nEscolha uma opção: "))
+        if opcao in [1, 2, 3, 4]:
+            lesao_atual = opcao  # Atribui a lesão ativa globalmente
+            
         if opcao == 1:
             print("\nPROTOCOLO RECUPERAÇÃO ATIVA: JOELHO")
             print("\nDiretriz de Treino:")
@@ -650,6 +718,9 @@ def gerenciar_lesoes():
             print("  - sled push e farmer's carry")
         
         elif opcao == 5:
+            lesao_atual = None
+            print("\nNenhuma lesão ativa configurada no perfil.")
+        elif opcao == 6:
             return
         else:
             print("Opção inválida.")
@@ -681,7 +752,7 @@ while True:
                 print("[5] - Excluir exercício")
                 print('[6] - Voltar ao menu principal')
                 num = int(input("Digite o código referente ao que deve ser feito: "))
-                if num==1:
+                if num == 1:
                     add()
                 elif num == 2:
                     editar()
