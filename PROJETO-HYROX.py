@@ -129,8 +129,7 @@ def add_exercicio(treino):
         "Nome do exercício (sled push | sled pull | burpee broad jumps | wall balls | farmer's carry): "
     ).lower().strip()
 
-    # --- VERIFICAÇÃO DE EXERCÍCIOS PROIBIDOS POR LESÃO ---
-    # Mapeia os exercícios que devem ser evitados para cada opção de lesão
+    #mapeia exercícios que devem ser evitados para cada opção de lesão
     restricoes = {
         1: ["wall balls", "burpee broad jumps"],          # Joelho
         2: ["wall balls", "burpee broad jumps", "sled pull"], # Ombro
@@ -513,7 +512,6 @@ def acompanhar_evolucoes(treinos):
     else:
      print(" Permaneceu igual")
 
-
  else:
     print(" Nenhuma carga registrada")
 
@@ -737,9 +735,10 @@ while True:
     print("[2] - Visualizar treinos")
     print("[3] - Adicionar competição")
     print("[4] - Visualizar competições")
-    print("[5] - Sugestões personalizadas")
-    print("[6] - Indicar lesão (Adaptar treinos)")
-    print("[7] - Sair")
+    print("[5] - Acompanhar evolução")
+    print("[6] - Sugestões personalizadas")
+    print("[7] - Indicar lesão (Adaptar treinos)")
+    print("[8] - Sair")
 
     try:
         op = int(input("\nEscolha: "))
@@ -771,10 +770,12 @@ while True:
         elif op == 4:
             vizualizar_competicoes()
         elif op == 5:
-            sugestoes()
+            acompanhar_evolucoes(treinos)
         elif op == 6:
-            gerenciar_lesoes()
+            sugestoes()
         elif op == 7:
+            gerenciar_lesoes()
+        elif op == 8:
             print("Programa encerrado.")
             break
         else:
