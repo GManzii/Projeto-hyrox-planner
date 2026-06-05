@@ -516,26 +516,6 @@ def acompanhar_evolucoes(treinos):
     print(" Nenhuma carga registrada")
 
 
-#exibe na tela todas as competições salvas e os detalhes de cada uma
-def vizualizar_competicoes():
-    if not competicoes:
-        print("Nenhuma competição cadastrada.\n")
-    else:
-        print("\n--- Competições Cadastradas ---")
-
-
-        for i, competicao in enumerate(competicoes):
-            data_competicao = datetime.strptime(competicao["data"], "%d/%m/%Y").date()
-            hoje = datetime.today().date()
-            dias_faltando = (data_competicao - hoje).days
-
-
-            print(f"\n--- Ccompetição {i+1} ---")
-            print(f"Data: {competicao['data']}")
-            print(f"Local: {competicao['local']}")
-            print(f"Categoria: {competicao['categoria']}")
-            print(f"Faltam {dias_faltando} dias para o evento.")
-
 #para gerar sugestões baseadas no nível do atleta
 def sugestoes():
     print ("\n--- Sugestões Personalizadas ---")
