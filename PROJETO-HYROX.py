@@ -273,36 +273,6 @@ def remover():
     else:
         print("Treino não encontrado.\n")
 
-def remover_exercicio():
-    visualizar()
-    if not treinos:
-        return
-
-    treino_indice = int(input("\nDigite o número do treino: "))
-
-    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
-        print("Treino não encontrado.")
-        return
-
-    treino = treinos[treino_indice-1]
-
-    if len(treino["exercicios"]) == 0:
-        print("Esse treino não possui exercícios.")
-        return
-
-    print("\nExercícios:")
-    for i, exercicio in enumerate(treino["exercicios"]):
-        print(f"[{i+1}] - {exercicio['nome']}")
-
-    exercicio_indice = int(input("\nDigite o número do exercício que deseja remover: "))
-
-    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
-        print("Exercício não encontrado.")
-        return
-
-    treino["exercicios"].pop(exercicio_indice-1)
-    salvar_txt()
-    print("Exercício removido com sucesso!")
 
 def editar_exercicio():
     visualizar()
@@ -347,6 +317,37 @@ def editar_exercicio():
         print("Exercício atualizado!")
     else:
         print("Campo inválido.")
+
+def remover_exercicio():
+    visualizar()
+    if not treinos:
+        return
+
+    treino_indice = int(input("\nDigite o número do treino: "))
+
+    if treino_indice-1 < 0 or treino_indice-1 >= len(treinos):
+        print("Treino não encontrado.")
+        return
+
+    treino = treinos[treino_indice-1]
+
+    if len(treino["exercicios"]) == 0:
+        print("Esse treino não possui exercícios.")
+        return
+
+    print("\nExercícios:")
+    for i, exercicio in enumerate(treino["exercicios"]):
+        print(f"[{i+1}] - {exercicio['nome']}")
+
+    exercicio_indice = int(input("\nDigite o número do exercício que deseja remover: "))
+
+    if exercicio_indice-1 < 0 or exercicio_indice-1 >= len(treino["exercicios"]):
+        print("Exercício não encontrado.")
+        return
+
+    treino["exercicios"].pop(exercicio_indice-1)
+    salvar_txt()
+    print("Exercício removido com sucesso!")
 
 #cadastra uma competição completa coletando as informações do usuário
 def cadastrar_competicao():
