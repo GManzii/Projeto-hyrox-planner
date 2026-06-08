@@ -390,9 +390,7 @@ def acompanhar_evolucoes(treinos):
  print("\nEVOLUÇÃO")
  print("===================================")
 
-
  total_treinos = len(treinos)
-# Cria um conjunto para armazenar as semanas sem repetição
  semanas = set()
  for treino in treinos:
     data = datetime.strptime(
@@ -401,24 +399,20 @@ def acompanhar_evolucoes(treinos):
     )
     semana = data.isocalendar()[1]
     semanas.add(semana)
-
-
+     
  total_semanas = len(semanas)
-
 
  if total_semanas > 0:
     frequencia = total_treinos // total_semanas
-
 
     if total_treinos % total_semanas != 0:
         frequencia += 1
  else:
     frequencia = 0
 
-
  print(f"\n FREQUÊNCIA SEMANAL: \n {frequencia} treino(s) por semana")
 
-
+# Exibe a frequência semanal
  treinos_ordenados = sorted(
     treinos,
     key=lambda treino: datetime.strptime(
@@ -429,34 +423,26 @@ def acompanhar_evolucoes(treinos):
  primeiro_tempo = None
  ultimo_tempo = None
 
-
+# Percorre os treinos ordenados para obter os tempos
  for treino in treinos_ordenados:
     if "duracao" in treino:
         try:
             tempo = float(treino["duracao"])
-
-
             if primeiro_tempo is None:
                 primeiro_tempo = tempo
             ultimo_tempo = tempo
-
-
+            
         except ValueError:
             pass
 
-
  print("\n EVOLUÇÃO DE TEMPOS:")
 
-
  if primeiro_tempo is not None and ultimo_tempo is not None:
-
 
     print(f" Primeiro treino: {primeiro_tempo} minutos")
     print(f" Último treino: {ultimo_tempo} minutos")
 
-
     diferenca_tempo = ultimo_tempo - primeiro_tempo
-
 
     if diferenca_tempo < 0:
      print(f" Piorou: {abs(diferenca_tempo)} minutos")
@@ -465,47 +451,34 @@ def acompanhar_evolucoes(treinos):
     else:
      print(" Permaneceu igual")
 
-
  else:
      print(" Nenhum tempo registrado")
-
 
  primeira_carga = None
  ultima_carga = None
 
-
  for treino in treinos_ordenados:
     for exercicio in treino["exercicios"]:
-
 
         if "carga" in exercicio:
             try:
                 carga = float(exercicio["carga"])
 
-
                 if primeira_carga is None:
                     primeira_carga = carga
 
-
                 ultima_carga = carga
-
 
             except ValueError:
                 pass
 
-
  print("\n EVOLUÇÃO DE CARGAS:")
 
-
  if primeira_carga is not None and ultima_carga is not None:
-
-
     print(f" Primeiro treino: {primeira_carga} kg")
     print(f" Último treino: {ultima_carga} kg")
 
-
     diferenca_carga = ultima_carga - primeira_carga
-
 
     if diferenca_carga > 0:
      print(f" Evoluiu: {diferenca_carga} kg")
@@ -516,7 +489,6 @@ def acompanhar_evolucoes(treinos):
 
  else:
     print(" Nenhuma carga registrada")
-
 
 #para gerar sugestões baseadas no nível do atleta
 def sugestoes():
