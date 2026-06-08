@@ -381,6 +381,7 @@ def vizualizar_competicoes():
             print(f"Local: {competicao['local']}")
             print(f"Categoria: {competicao['categoria']}")
             print(f"Faltam {dias_faltando} dias para o evento.")
+            
 #acompanha a evolução entre a data mais antiga e a mais nova
 def acompanhar_evolucoes(treinos):
  if not treinos:
@@ -390,6 +391,7 @@ def acompanhar_evolucoes(treinos):
  print("\nEVOLUÇÃO")
  print("===================================")
 
+ # identificar em quais semanas ocorreram os treinos
  total_treinos = len(treinos)
  semanas = set()
  for treino in treinos:
