@@ -420,6 +420,7 @@ def acompanhar_evolucoes(treinos):
         "%d/%m/%Y"
     )
  )
+ # Variáveis que armazenarão a duração do primeiro e do último treino
  primeiro_tempo = None
  ultimo_tempo = None
 
@@ -434,7 +435,7 @@ def acompanhar_evolucoes(treinos):
             
         except ValueError:
             pass
-
+# Exibe a seção de evolução dos tempos
  print("\n EVOLUÇÃO DE TEMPOS:")
 
  if primeiro_tempo is not None and ultimo_tempo is not None:
@@ -447,13 +448,14 @@ def acompanhar_evolucoes(treinos):
     if diferenca_tempo < 0:
      print(f" Piorou: {abs(diferenca_tempo)} minutos")
     elif diferenca_tempo > 0:
-     print(f" Evoluiu: {diferenca_tempo} minutos")
+     print(f" Evoluiu: {abs(diferenca_tempo)} minutos")
     else:
      print(" Permaneceu igual")
 
  else:
      print(" Nenhum tempo registrado")
 
+ # Variáveis que armazenarão as cargas do primeiro e do último treino
  primeira_carga = None
  ultima_carga = None
 
