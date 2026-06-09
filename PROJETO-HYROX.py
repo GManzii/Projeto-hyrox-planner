@@ -498,6 +498,8 @@ def sugestoes():
     nivel = input("Insira o seu nível: (iniciante; intermediário; avançado ):\n").strip().lower()
 
     #aceita tanto com acento quanto sem acento
+    if nivel == "iniciante":
+        nivel = "iniciante"
     if nivel == "intermediário":
         nivel = "intermediario"
     if nivel == "avançado":
