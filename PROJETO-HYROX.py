@@ -449,7 +449,7 @@ def acompanhar_evolucoes(treinos):
     if diferenca_tempo < 0:
      print(f" Piorou: {abs(diferenca_tempo)} minutos")
     elif diferenca_tempo > 0:
-     print(f" Evoluiu: {abs(diferenca_tempo)} minutos")
+     print(f" Evoluiu: {diferenca_tempo} minutos")
     else:
      print(" Permaneceu igual")
 
