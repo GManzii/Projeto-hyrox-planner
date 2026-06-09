@@ -17,5 +17,8 @@ O projeto surgiu com a iniciativa de facilitar o dia a dia de atletas ao fornece
 
 ### Tecnologias usadas
 -python;
+-github
+-VScode
+
 
 
