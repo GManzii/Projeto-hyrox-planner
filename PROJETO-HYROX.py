@@ -495,6 +495,111 @@ def acompanhar_evolucoes(treinos):
 
 #para gerar sugestões baseadas no nível do atleta
 
+ def sugestoes():
+    print ("\n--- Sugestões Personalizadas ---")
+    nivel = input("Insira o seu nível: (iniciante; intermediário; avançado ):\n").strip().lower()
+
+    #aceita tanto com acento quanto sem acento
+    if nivel == "intermediário":
+        nivel = "intermediario"
+    if nivel == "avançado":
+        nivel = "avancado"
+    
+    if nivel != "iniciante" and nivel != "intermediario" and nivel != "avancado":
+        print ("\nNível inválido. Escolha entre iniciante, intermediário, avançado ")
+        return
+    #analisar os resultados anteriores
+    total_treinos = len(treinos)
+
+    corridas = 0
+    forcas = 0
+    simulados = 0
+
+    for treino in treinos:
+       tipo = treino["tipo"].lower()
+       if tipo == "corrida":
+        corridas +=1
+       elif tipo == "força":
+        forcas +=1
+       elif tipo == "simulado hyrox":
+        simulados += 1
+
+#armazena a maior carga atingida em cada exercicio
+    maiores_cargas = {}
+    for treino in treinos:
+        for exercicio in treino["exercicios"]:
+            if "carga" in exercicio:
+                try:
+                    carga = float(exercicio["carga"])
+                except ValueError:
+                    continue
+                nome = exercicio["nome"]
+                if nome not in maiores_cargas or carga > maiores_cargas[nome]:
+                    maiores_cargas[nome] = carga
+
+    print(f"\nResumo até agora: {total_treinos} treino(s) cadastrado(s).")
+    print(f"Corrida: {corridas} | Força: {forcas} | Simulado HYROX: {simulados}")
+
+#divisão semanal ideal por nível 
+    divisao = {
+        "iniciante": [
+            "Segunda, sugestao: Corrida leve 20-30 min",
+            "Quarta, sugestao: Força full body (agachamento, remada, core)",
+            "Sábado, sugestao: Simulado HYROX curto (3 a 4 estações)"
+        ],
+        "intermediario": [
+            "Segunda, sugestao: Corrida intervalada (ex: 6x400m)",
+            "Terça, sugestao: Força de pernas + core",
+            "Quinta, sugestao: Força de superiores + pegada (grip)",
+            "Sexta, sugestao: Corrida longa contínua",
+            "Sábado, sugestao: Simulado HYROX completo"
+        ],
+        "avancado": [
+            "Segunda, sugestao: Corrida intervalada forte",
+            "Terça, sugestao: Força pesada de pernas",
+            "Quarta, sugestao: Transições corrida + estação (compromised running)",
+            "Quinta, sugestao: Força de superiores + pegada",
+            "Sexta, sugestao: Corrida longa em ritmo de prova",
+            "Sábado, sugestao: Simulado HYROX completo cronometrado"
+        ]
+    }
+
+    print(f"\nDivisão semanal sugerida ({nivel}):")
+    for dia in divisao[nivel]:
+        print(f"- {dia}")
+
+# cargas ideais por nível; se já houver registro, sugere progressão de 5% 
+    cargas_base = {
+        "iniciante": {"sled push": 50, "sled pull": 50, "wall balls": 4, "farmer's carry": 16},
+        "intermediario": {"sled push": 75, "sled pull": 75, "wall balls": 6, "farmer's carry": 20},
+        "avancado": {"sled push": 100, "sled pull": 100, "wall balls": 9, "farmer's carry": 24}
+    }
+    print(f"\nCargas ideais sugeridas  para ({nivel}):")
+    for exercicio_nome, carga_base in cargas_base[nivel].items():
+        if exercicio_nome in maiores_cargas:
+            atual = maiores_cargas[exercicio_nome]
+            meta = round(atual * 1.05, 1)
+            print(f"- {exercicio_nome}: você já fez {atual} kg, tente progredir para {meta} kg")
+        else:
+            print(f"- {exercicio_nome}: comece com cerca de {carga_base} kg")
+
+ #estratégias por etapa do HYROX 
+    print("\nEstratégias por etapa do HYROX:")
+    print("- Corrida: mantenha ritmo constante, não comece rápido demais")
+    print("- Sled push/pull: passos curtos e fortes, tronco firme")
+    print("- Burpee broad jumps: economize energia, salto controlado")
+    print("- Wall balls: respiração  ritmada e mire sempre no mesmo ponto")
+    print("- Farmer's carry: pegada firme, ombros para trás e passo constante")
+
+# dica geral com base na frequência de treinos 
+    print("\nDica geral:")
+    if total_treinos < 3:
+      print("Você tem poucos treinos registrados. Foque em criar consistência (3x por semana).")
+    elif simulados == 0:
+        print("Inclua pelo menos 1 simulado HYROX por semana para treinar as transições.")
+    else:
+        print("Boa frequência! Foque em melhorar tempos e progredir cargas aos poucos.")
+
 
 #adaptação caso haja lesão
 def gerenciar_lesoes():
