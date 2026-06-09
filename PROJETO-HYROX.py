@@ -357,9 +357,9 @@ def cadastrar_competicao():
     local = input("Local da competição: ")
     categoria = input("Categoria(iniciante, intermediário ou avançado): ")
 
-    comperticao = {"data": data,"local": local,"categoria":categoria}
+    competicao = {"data": data,"local": local,"categoria":categoria}
 
-    competicoes.append(comperticao)
+    competicoes.append(competicao)
     #salva no arquivo
     salvar_competicoes_txt()
     print("Competição cadastrada com sucesso!")
