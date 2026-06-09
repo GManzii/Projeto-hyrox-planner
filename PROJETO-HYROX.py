@@ -140,7 +140,7 @@ def add_exercicio(treino):
 
     if lesao_atual in restricoes:
         if nome in restricoes[lesao_atual]:
-            print("\n[ALERTA] Este é um tipo de exercício que deve ser evitado por sua lesão.\n")
+            print("\n[ALERTA] este é um tipo de exercício que deve ser evitado por sua lesão.\n")
 
     exercicio = {
         "nome": nome
@@ -594,11 +594,11 @@ def acompanhar_evolucoes(treinos):
 # dica geral com base na frequência de treinos 
     print("\nDica geral:")
     if total_treinos < 3:
-      print("Você tem poucos treinos registrados. Foque em criar consistência (3x por semana).")
+      print("Você tem poucos treinos registrados. Foque em criar consistência (3x por semana)!")
     elif simulados == 0:
-        print("Inclua pelo menos 1 simulado HYROX por semana para treinar as transições.")
+        print("Inclua pelo menos 1 simulado HYROX por semana para treinar as transições!")
     else:
-        print("Boa frequência! Foque em melhorar tempos e progredir cargas aos poucos.")
+        print("Boa frequência! Foque em melhorar tempos e progredir cargas aos poucos!")
 
 
 #adaptação caso haja lesão
