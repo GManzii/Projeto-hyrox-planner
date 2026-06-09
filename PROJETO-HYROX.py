@@ -4,6 +4,7 @@ treinos = []
 competicoes = []
 lesao_atual = None  #armazena globalmente a lesão selecionada pelo usuário
 
+
 #valida e garante que a data digitada não seja futura
 def obter_data_valida(mensagem="Data (DD/MM/AAAA): "):
     while True:
