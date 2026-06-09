@@ -412,9 +412,9 @@ def acompanhar_evolucoes(treinos):
  else:
     frequencia = 0
 
+ # Exibe a frequência semanal
  print(f"\n FREQUÊNCIA SEMANAL: \n {frequencia} treino(s) por semana")
 
-# Exibe a frequência semanal
  treinos_ordenados = sorted(
     treinos,
     key=lambda treino: datetime.strptime(
