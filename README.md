@@ -15,6 +15,12 @@ O projeto surgiu com a iniciativa de facilitar o dia a dia de atletas ao fornece
 -sugerir treinos;\
 -cadastrar lesões;
 
+## Estrutura
+ | projeto |
+ ├── Funcões
+ ├── Menu 
+ 
+
 ### Tecnologias usadas
 -python;
 -github;
